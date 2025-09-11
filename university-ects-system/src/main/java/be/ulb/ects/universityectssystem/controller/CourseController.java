@@ -22,5 +22,8 @@ public class CourseController {
         return courseRepository.findAll();
     }
 
-    
+    @GetMapping("/{id}")
+    public Course getCourse(@PathVariable String id) {
+        return courseRepository.findById(id).orElse(null);
+    }
 }
