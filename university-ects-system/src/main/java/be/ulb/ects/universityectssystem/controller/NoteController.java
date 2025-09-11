@@ -36,7 +36,7 @@ public class NoteController {
         return ResponseEntity.ok(notes);
     }
 
-    @Operation(summary = "Get notes for a student")
+    @Operation(summary = "Get notes for a inscription")
     @GetMapping("/student/{matricule}")
     public ResponseEntity<List<Note>> getNotesByStudent(@PathVariable String matricule) {
         List<Note> notes = noteRepository.findByMatricule(matricule);
@@ -56,7 +56,7 @@ public class NoteController {
         return ResponseEntity.ok(notes);
     }
 
-    @Operation(summary = "Get note for a student in a course")
+    @Operation(summary = "Get note for a inscription in a course")
     @GetMapping("/{matricule}/{mnemonique}")
     public ResponseEntity<List<Note>> getNoteForStudentAndCourse(
             @PathVariable String matricule,

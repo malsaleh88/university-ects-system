@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "liste_cours")
-public class Course {
+public class Cour {
     @Id
     private String mnemonique;
     private String intitule;

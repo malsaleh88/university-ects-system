@@ -13,7 +13,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("University ECTS System API")
-                        .description("API for managing students, courses, and notes")
+                        .description("API for managing students, cours, and notes")
                         .version("1.0.0"));
     }
 }
