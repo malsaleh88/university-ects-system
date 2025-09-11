@@ -4,6 +4,8 @@ import be.ulb.ects.universityectssystem.model.Student;
 import be.ulb.ects.universityectssystem.repository.StudentRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
@@ -12,6 +14,11 @@ public class StudentController {
 
     public StudentController(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
+    }
+
+    @GetMapping
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
     }
 
 }
