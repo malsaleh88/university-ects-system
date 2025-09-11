@@ -22,8 +22,8 @@ public class StudentController {
     }
 
     @GetMapping("/{matricule}")
-    public Student getStudent(@PathVariable String matricule) {
-        return studentRepository.findById(matricule).orElse(null);
+    public List<Student> getStudent(@PathVariable String matricule) {
+        return studentRepository.findByMatricule(matricule);
     }
 
 }
