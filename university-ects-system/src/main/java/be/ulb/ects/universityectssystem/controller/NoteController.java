@@ -30,4 +30,12 @@ public class NoteController {
     public List<Note> getNotesByCourse(@PathVariable String mnemonique) {
         return noteRepository.findByMnemonique(mnemonique);
     }
+
+    @GetMapping("/{matricule}/{mnemonique}")
+    public List<Note> getNoteForStudentAndCourse(
+            @PathVariable String matricule,
+            @PathVariable String mnemonique
+    ) {
+        return noteRepository.findByMatriculeAndMnemonique(matricule, mnemonique);
+    }
 }

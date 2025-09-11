@@ -13,4 +13,7 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
 
     List<Note> findByMnemonique(String mnemonique);
 
+    List<Note> findByMatriculeAndMnemonique(String matricule, String mnemonique);
+
+
 }
