@@ -7,4 +7,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/notes")
 public class NoteController {
+
+    private final NoteRepository noteRepository;
+
+    public NoteController(NoteRepository noteRepository) {
+        this.noteRepository = noteRepository;
+    }
 }
