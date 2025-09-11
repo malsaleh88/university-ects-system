@@ -5,11 +5,13 @@ import be.ulb.ects.universityectssystem.repository.NoteRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Note Controller", description = "Endpoints for managing notes")
 @RestController
 @RequestMapping("/api/notes")
 public class NoteController {
