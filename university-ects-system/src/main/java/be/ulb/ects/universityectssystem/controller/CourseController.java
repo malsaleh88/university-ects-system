@@ -31,6 +31,6 @@ public class CourseController {
     public ResponseEntity<Course> getCourse(@PathVariable String id) {
         return courseRepository.findById(id)
                 .map(ResponseEntity::ok) //
-                .orElseGet(() -> ResponseEntity.notFound().build()); 
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

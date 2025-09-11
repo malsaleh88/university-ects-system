@@ -2,6 +2,7 @@ package be.ulb.ects.universityectssystem.controller;
 
 import be.ulb.ects.universityectssystem.model.Note;
 import be.ulb.ects.universityectssystem.repository.NoteRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,25 +18,42 @@ public class NoteController {
     }
 
     @GetMapping
-    public List<Note> getAllNotes() {
-        return noteRepository.findAll();
+    public ResponseEntity<List<Note>> getAllNotes() {
+        List<Note> notes = noteRepository.findAll();
+        if (notes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(notes);
     }
 
+
     @GetMapping("/student/{matricule}")
-    public List<Note> getNotesByStudent(@PathVariable String matricule) {
-        return noteRepository.findByMatricule(matricule);
+    public ResponseEntity<List<Note>> getNotesByStudent(@PathVariable String matricule) {
+        List<Note> notes = noteRepository.findByMatricule(matricule);
+        if (notes.isEmpty()) {
+            return ResponseEntity.notFound().build(); // 404 if no notes for student
+        }
+        return ResponseEntity.ok(notes);
     }
 
     @GetMapping("/course/{mnemonique}")
-    public List<Note> getNotesByCourse(@PathVariable String mnemonique) {
-        return noteRepository.findByMnemonique(mnemonique);
+    public ResponseEntity<List<Note>> getNotesByCourse(@PathVariable String mnemonique) {
+        List<Note> notes = noteRepository.findByMnemonique(mnemonique);
+        if (notes.isEmpty()) {
+            return ResponseEntity.notFound().build(); // 404 if no notes for course
+        }
+        return ResponseEntity.ok(notes);
     }
 
     @GetMapping("/{matricule}/{mnemonique}")
-    public List<Note> getNoteForStudentAndCourse(
+    public ResponseEntity<List<Note>> getNoteForStudentAndCourse(
             @PathVariable String matricule,
             @PathVariable String mnemonique
     ) {
-        return noteRepository.findByMatriculeAndMnemonique(matricule, mnemonique);
+        List<Note> notes = noteRepository.findByMatriculeAndMnemonique(matricule, mnemonique);
+        if (notes.isEmpty()) {
+            return ResponseEntity.notFound().build(); // 404 if no note for this pair
+        }
+        return ResponseEntity.ok(notes);
     }
 }
