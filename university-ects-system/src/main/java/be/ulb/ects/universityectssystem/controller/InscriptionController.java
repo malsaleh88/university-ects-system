@@ -2,6 +2,7 @@ package be.ulb.ects.universityectssystem.controller;
 
 import be.ulb.ects.universityectssystem.model.Inscription;
 import be.ulb.ects.universityectssystem.repository.InscriptionRepository;
+import be.ulb.ects.universityectssystem.service.InscriptionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,10 +17,10 @@ import java.util.List;
 @RequestMapping("/api/inscriptions")
 public class InscriptionController {
 
-    private final InscriptionRepository inscriptionRepository;
+    private final InscriptionService inscriptionService;
 
-    public InscriptionController(InscriptionRepository inscriptionRepository) {
-        this.inscriptionRepository = inscriptionRepository;
+    public InscriptionController(InscriptionService inscriptionService) {
+        this.inscriptionService = inscriptionService;
     }
 
 
@@ -30,7 +31,7 @@ public class InscriptionController {
     })
     @GetMapping
     public ResponseEntity<List<Inscription>> getAllInscriptions() {
-        List<Inscription> inscriptions = inscriptionRepository.findAll();
+        List<Inscription> inscriptions = inscriptionService.getAllInscriptions();
         if (inscriptions.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -45,7 +46,7 @@ public class InscriptionController {
     })
     @GetMapping("/{matricule}")
     public ResponseEntity<List<Inscription>> getInscription(@PathVariable String matricule) {
-        List<Inscription> inscriptions = inscriptionRepository.findByMatricule(matricule);
+        List<Inscription> inscriptions = inscriptionService.getInscriptionsByMatricule(matricule);
         if (inscriptions.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
