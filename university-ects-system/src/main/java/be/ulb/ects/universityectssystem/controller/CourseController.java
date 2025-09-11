@@ -1,8 +1,11 @@
 package be.ulb.ects.universityectssystem.controller;
 
+import be.ulb.ects.universityectssystem.model.Course;
 import be.ulb.ects.universityectssystem.repository.CourseRepository;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/courses")
@@ -14,4 +17,10 @@ public class CourseController {
     }
 
 
+    @GetMapping
+    public List<Course> getAllCourses() {
+        return courseRepository.findAll();
+    }
+
+    
 }
