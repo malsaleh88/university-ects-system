@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "liste_inscriptions")
-public class Student {
+public class Inscription {
     @Id
     private String matricule;
     private String nom;
