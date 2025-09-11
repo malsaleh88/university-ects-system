@@ -20,4 +20,9 @@ public class NoteController {
     public List<Note> getAllNotes() {
         return noteRepository.findAll();
     }
+
+    @GetMapping("/student/{matricule}")
+    public List<Note> getNotesByStudent(@PathVariable String matricule) {
+        return noteRepository.findByMatricule(matricule);
+    }
 }
