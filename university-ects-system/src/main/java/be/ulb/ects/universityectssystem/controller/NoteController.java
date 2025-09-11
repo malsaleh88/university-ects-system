@@ -4,6 +4,8 @@ import be.ulb.ects.universityectssystem.model.Note;
 import be.ulb.ects.universityectssystem.repository.NoteRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/notes")
 public class NoteController {
@@ -12,5 +14,10 @@ public class NoteController {
 
     public NoteController(NoteRepository noteRepository) {
         this.noteRepository = noteRepository;
+    }
+
+    @GetMapping
+    public List<Note> getAllNotes() {
+        return noteRepository.findAll();
     }
 }
