@@ -19,5 +19,8 @@ public class InscriptionService {
         return inscriptionRepository.findAll();
     }
 
+    public List<Inscription> getInscriptionsByMatricule(String matricule) {
+        return inscriptionRepository.findByMatricule(matricule);
+    }
 
 }
