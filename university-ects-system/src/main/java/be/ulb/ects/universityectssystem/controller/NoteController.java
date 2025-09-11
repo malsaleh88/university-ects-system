@@ -31,7 +31,7 @@ public class NoteController {
     public ResponseEntity<List<Note>> getNotesByStudent(@PathVariable String matricule) {
         List<Note> notes = noteRepository.findByMatricule(matricule);
         if (notes.isEmpty()) {
-            return ResponseEntity.notFound().build(); // 404 if no notes for student
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(notes);
     }
@@ -40,7 +40,7 @@ public class NoteController {
     public ResponseEntity<List<Note>> getNotesByCourse(@PathVariable String mnemonique) {
         List<Note> notes = noteRepository.findByMnemonique(mnemonique);
         if (notes.isEmpty()) {
-            return ResponseEntity.notFound().build(); // 404 if no notes for course
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(notes);
     }
@@ -52,7 +52,7 @@ public class NoteController {
     ) {
         List<Note> notes = noteRepository.findByMatriculeAndMnemonique(matricule, mnemonique);
         if (notes.isEmpty()) {
-            return ResponseEntity.notFound().build(); // 404 if no note for this pair
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(notes);
     }
