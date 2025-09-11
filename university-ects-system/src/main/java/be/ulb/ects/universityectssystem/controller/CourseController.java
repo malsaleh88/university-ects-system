@@ -2,6 +2,7 @@ package be.ulb.ects.universityectssystem.controller;
 
 import be.ulb.ects.universityectssystem.model.Course;
 import be.ulb.ects.universityectssystem.repository.CourseRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +19,18 @@ public class CourseController {
 
 
     @GetMapping
-    public List<Course> getAllCourses() {
-        return courseRepository.findAll();
+    public ResponseEntity<List<Course>> getAllCourses() {
+        List<Course> courses = courseRepository.findAll();
+        if (courses.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(courses);
     }
 
     @GetMapping("/{id}")
-    public Course getCourse(@PathVariable String id) {
-        return courseRepository.findById(id).orElse(null);
+    public ResponseEntity<Course> getCourse(@PathVariable String id) {
+        return courseRepository.findById(id)
+                .map(ResponseEntity::ok) //
+                .orElseGet(() -> ResponseEntity.notFound().build()); 
     }
 }

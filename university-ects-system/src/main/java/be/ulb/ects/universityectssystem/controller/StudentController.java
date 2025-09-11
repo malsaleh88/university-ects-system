@@ -33,7 +33,7 @@ public class StudentController {
         if (students.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(students); 
+        return ResponseEntity.ok(students);
     }
 
 }
