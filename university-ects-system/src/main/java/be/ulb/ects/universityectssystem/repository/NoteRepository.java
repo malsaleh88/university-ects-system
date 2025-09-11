@@ -10,4 +10,7 @@ import java.util.List;
 public interface NoteRepository extends JpaRepository<Note, Integer> {
     List<Note> findByMatricule(String matricule);
 
+
+    List<Note> findByMnemonique(String mnemonique);
+
 }
