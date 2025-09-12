@@ -19,5 +19,11 @@ public class NoteService {
         return noteRepository.findAll();
     }
 
+    public List<Note> getNotesByStudent(String matricule) {
+        return noteRepository.findByMatricule(matricule);
+    }
+
+    
+
 
 }
