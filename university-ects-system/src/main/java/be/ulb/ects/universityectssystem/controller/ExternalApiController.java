@@ -15,8 +15,18 @@ public class ExternalApiController {
         this.externalApiService = externalApiService;
     }
 
-    @GetMapping("/test")
-    public String testConnection() {
-        return externalApiService.testConnection();
+    @GetMapping("/inscriptions")
+    public String fetchInscriptions() {
+        return externalApiService.getInscriptions();
+    }
+
+    @GetMapping("/cours")
+    public String fetchCours() {
+        return externalApiService.getCours();
+    }
+
+    @GetMapping("/notes")
+    public String fetchNotes() {
+        return externalApiService.getNotes();
     }
 }
