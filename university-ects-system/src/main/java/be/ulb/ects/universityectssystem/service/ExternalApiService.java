@@ -15,17 +15,17 @@ public class ExternalApiService {
     }
 
     public String getInscriptions() {
-        String url = BASE_URL + "/inscriptions"; // ✅ FIXED
+        String url = BASE_URL + "/inscriptions";
         return restTemplate.getForObject(url, String.class);
     }
 
     public String getCours() {
-        String url = BASE_URL + "/cours"; // ✅ FIXED
+        String url = BASE_URL + "/cours";
         return restTemplate.getForObject(url, String.class);
     }
 
     public String getNotes() {
-        String url = BASE_URL + "/notes"; // ✅ FIXED
+        String url = BASE_URL + "/notes";
         return restTemplate.getForObject(url, String.class);
     }
 }
