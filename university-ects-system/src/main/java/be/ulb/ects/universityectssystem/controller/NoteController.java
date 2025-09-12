@@ -2,6 +2,7 @@ package be.ulb.ects.universityectssystem.controller;
 
 import be.ulb.ects.universityectssystem.model.Note;
 import be.ulb.ects.universityectssystem.repository.NoteRepository;
+import be.ulb.ects.universityectssystem.service.NoteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,10 +17,10 @@ import java.util.List;
 @RequestMapping("/api/notes")
 public class NoteController {
 
-    private final NoteRepository noteRepository;
+    private final NoteService noteService;
 
-    public NoteController(NoteRepository noteRepository) {
-        this.noteRepository = noteRepository;
+    public NoteController(NoteService noteService) {
+        this.noteService = noteService;
     }
 
     @Operation(summary = "Get all notes")
@@ -29,7 +30,7 @@ public class NoteController {
     })
     @GetMapping
     public ResponseEntity<List<Note>> getAllNotes() {
-        List<Note> notes = noteRepository.findAll();
+        List<Note> notes = noteService.getAllNotes();
         if (notes.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -38,8 +39,8 @@ public class NoteController {
 
     @Operation(summary = "Get notes for a inscription")
     @GetMapping("/student/{matricule}")
-    public ResponseEntity<List<Note>> getNotesByStudent(@PathVariable String matricule) {
-        List<Note> notes = noteRepository.findByMatricule(matricule);
+    public ResponseEntity<List<Note>> getNotesByInscription(@PathVariable String matricule) {
+        List<Note> notes = noteService.getNotesByInscription(matricule);
         if (notes.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -48,8 +49,8 @@ public class NoteController {
 
     @Operation(summary = "Get notes for a course")
     @GetMapping("/course/{mnemonique}")
-    public ResponseEntity<List<Note>> getNotesByCourse(@PathVariable String mnemonique) {
-        List<Note> notes = noteRepository.findByMnemonique(mnemonique);
+    public ResponseEntity<List<Note>> getNotesByCour(@PathVariable String mnemonique) {
+        List<Note> notes = noteService.getNotesByCour(mnemonique);
         if (notes.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -58,11 +59,11 @@ public class NoteController {
 
     @Operation(summary = "Get note for a inscription in a course")
     @GetMapping("/{matricule}/{mnemonique}")
-    public ResponseEntity<List<Note>> getNoteForStudentAndCourse(
+    public ResponseEntity<List<Note>> getNoteForInscriptionAndCour(
             @PathVariable String matricule,
             @PathVariable String mnemonique
     ) {
-        List<Note> notes = noteRepository.findByMatriculeAndMnemonique(matricule, mnemonique);
+        List<Note> notes = noteService.getNoteForInscriptionAndCour(matricule, mnemonique);
         if (notes.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
