@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AnomalyService {
+
 
     private final ExternalApiService externalApiService;
 
@@ -16,107 +18,84 @@ public class AnomalyService {
     }
 
     public List<AnomalyDto> generateAnomalies() {
-        List<InscriptionDto> inscriptions = Optional.ofNullable(externalApiService.getInscriptions())
-                .orElse(Collections.emptyList());
-        List<CourDto> cours = Optional.ofNullable(externalApiService.getCours())
-                .orElse(Collections.emptyList());
-        List<NoteDto> notes = Optional.ofNullable(externalApiService.getNotes())
-                .orElse(Collections.emptyList());
+        var inscriptions = Optional.ofNullable(externalApiService.getInscriptions()).orElse(List.of());
+        var cours = Optional.ofNullable(externalApiService.getCours()).orElse(List.of());
+        var notes = Optional.ofNullable(externalApiService.getNotes()).orElse(List.of());
 
-        Map<String, CourDto> coursMap = cours.stream()
+        // index courses by mnemonique
+        var coursMap = cours.stream()
                 .filter(c -> c.getMnemonique() != null)
                 .collect(Collectors.toMap(CourDto::getMnemonique, c -> c, (c1, c2) -> c1));
 
+        // ✅ Pre-index inscriptions: matricule -> (InscriptionDto, Set of cours inscrits)
+        var inscriptionMap = inscriptions.stream()
+                .collect(Collectors.toMap(
+                        InscriptionDto::getMatricule,
+                        i -> Map.entry(i, new HashSet<>(parseCoursJson(i.getCoursJson()))),
+                        (i1, i2) -> i1
+                ));
+
         List<AnomalyDto> anomalies = new ArrayList<>();
 
-        // --- INSCRIPTION_SANS_COURS
-        for (InscriptionDto insc : inscriptions) {
-            if (insc.getCoursJson() == null || insc.getCoursJson().trim().isEmpty()) {
-                anomalies.add(new AnomalyDto(
-                        "INSCRIPTION_SANS_COURS",
-                        insc.getMatricule(),
-                        insc.getAnneeEtude(),
-                        "Aucune inscription de cours trouvée."
-                ));
-            }
-        }
+        // --- INSCRIPTION_SANS_COURS + COURS_INCONNU (handled in one pass over inscriptions)
+        for (var entry : inscriptionMap.values()) {
+            var insc = entry.getKey();
+            var coursSet = entry.getValue();
 
-        // --- NOTE_SANS_INSCRIPTION
-        for (NoteDto note : notes) {
-            Optional<InscriptionDto> inscOpt = inscriptions.stream()
-                    .filter(i -> i.getMatricule().equals(note.getMatricule()))
-                    .findFirst();
-            if (inscOpt.isEmpty()) {
-                anomalies.add(new AnomalyDto(
-                        "NOTE_SANS_INSCRIPTION",
-                        note.getMatricule(),
-                        -1,
-                        "Note pour cours " + note.getMnemonique() + " sans inscription."
-                ));
-            } else {
-                InscriptionDto insc = inscOpt.get();
-                List<String> coursInscrits = parseCoursJson(insc.getCoursJson());
-                if (!coursInscrits.contains(note.getMnemonique())) {
-                    anomalies.add(new AnomalyDto(
-                            "NOTE_SANS_INSCRIPTION",
-                            insc.getMatricule(),
-                            insc.getAnneeEtude(),
-                            "Note trouvée pour " + note.getMnemonique() + " mais non inscrit."
-                    ));
-                }
+            if (coursSet.isEmpty()) {
+                anomalies.add(anomaly("INSCRIPTION_SANS_COURS", insc.getMatricule(), insc.getAnneeEtude(),
+                        "Aucune inscription de cours trouvée."));
             }
-        }
 
-        // --- COURS_INCONNU
-        for (InscriptionDto insc : inscriptions) {
-            List<String> coursInscrits = parseCoursJson(insc.getCoursJson());
-            for (String mnemo : coursInscrits) {
+            for (String mnemo : coursSet) {
                 if (!coursMap.containsKey(mnemo)) {
-                    anomalies.add(new AnomalyDto(
-                            "COURS_INCONNU",
-                            insc.getMatricule(),
-                            insc.getAnneeEtude(),
-                            "Cours " + mnemo + " non présent dans la liste des cours."
-                    ));
+                    anomalies.add(anomaly("COURS_INCONNU", insc.getMatricule(), insc.getAnneeEtude(),
+                            "Cours " + mnemo + " non présent dans la liste des cours."));
                 }
             }
         }
 
-        // --- DUPLICATA_NOTE
-        Map<String, List<NoteDto>> notesGrouped = notes.stream()
-                .collect(Collectors.groupingBy(n -> n.getMatricule() + "-" + n.getMnemonique()));
-        for (var entry : notesGrouped.entrySet()) {
-            if (entry.getValue().size() > 1) {
-                anomalies.add(new AnomalyDto(
-                        "DUPLICATA_NOTE",
-                        entry.getValue().get(0).getMatricule(),
-                        -1,
-                        "Plusieurs notes trouvées pour " + entry.getKey()
-                ));
+        // --- NOTE_SANS_INSCRIPTION + NOTE_SANS_CREDIT (one pass over notes)
+        for (NoteDto note : notes) {
+            var inscEntry = inscriptionMap.get(note.getMatricule());
+            if (inscEntry == null) {
+                anomalies.add(anomaly("NOTE_SANS_INSCRIPTION", note.getMatricule(), -1,
+                        "Note pour cours " + note.getMnemonique() + " sans inscription."));
+            } else {
+                var insc = inscEntry.getKey();
+                var coursSet = inscEntry.getValue();
+                if (!coursSet.contains(note.getMnemonique())) {
+                    anomalies.add(anomaly("NOTE_SANS_INSCRIPTION", insc.getMatricule(), insc.getAnneeEtude(),
+                            "Note trouvée pour " + note.getMnemonique() + " mais non inscrit."));
+                }
+            }
+
+            var cour = coursMap.get(note.getMnemonique());
+            if (cour != null && cour.getCredit() <= 0) {
+                anomalies.add(anomaly("NOTE_SANS_CREDIT", note.getMatricule(), -1,
+                        "Cours " + note.getMnemonique() + " noté mais crédit manquant ou <= 0."));
             }
         }
 
-        // --- NOTE_SANS_CREDIT
-        for (NoteDto note : notes) {
-            CourDto cour = coursMap.get(note.getMnemonique());
-            if (cour != null && cour.getCredit() <= 0) {
-                anomalies.add(new AnomalyDto(
-                        "NOTE_SANS_CREDIT",
-                        note.getMatricule(),
-                        -1,
-                        "Cours " + note.getMnemonique() + " noté mais crédit manquant ou <= 0."
-                ));
-            }
-        }
+        // --- DUPLICATA_NOTE (one grouping pass)
+        notes.stream()
+                .collect(Collectors.groupingBy(n -> n.getMatricule() + "-" + n.getMnemonique()))
+                .forEach((key, group) -> {
+                    if (group.size() > 1) {
+                        anomalies.add(anomaly("DUPLICATA_NOTE", group.get(0).getMatricule(), -1,
+                                "Plusieurs notes trouvées pour " + key));
+                    }
+                });
 
         return anomalies;
     }
 
-    // helper: parse cours_json into list
+    private AnomalyDto anomaly(String type, String matricule, int annee, String detail) {
+        return new AnomalyDto(type, matricule, annee, detail);
+    }
+
     private List<String> parseCoursJson(String coursJson) {
-        if (coursJson == null || coursJson.isBlank()) {
-            return Collections.emptyList();
-        }
+        if (coursJson == null || coursJson.isBlank()) return List.of();
         return Arrays.stream(coursJson.replace("[", "")
                         .replace("]", "")
                         .replace("\"", "")
@@ -126,3 +105,4 @@ public class AnomalyService {
                 .toList();
     }
 }
+
