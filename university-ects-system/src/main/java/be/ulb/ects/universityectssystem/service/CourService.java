@@ -5,6 +5,7 @@ import be.ulb.ects.universityectssystem.repository.CourRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -20,5 +21,8 @@ public class CourService {
         return courRepository.findAll();
     }
 
+    public Optional<Cour> getCourById(String id) {
+        return courRepository.findById(id);
+    }
 
 }
