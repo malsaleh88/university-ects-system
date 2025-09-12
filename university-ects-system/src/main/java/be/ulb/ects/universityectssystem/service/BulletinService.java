@@ -9,53 +9,55 @@ import java.util.stream.Collectors;
 @Service
 public class BulletinService {
 
-   private final ExternalApiService externalApiService;
+    private final ExternalApiService externalApiService;
 
     public BulletinService(ExternalApiService externalApiService) {
         this.externalApiService = externalApiService;
     }
 
     public List<BulletinDto> generateBulletins() {
-        List<InscriptionDto> inscriptions = externalApiService.getInscriptions();
-        List<CourDto> cours = externalApiService.getCours();
-        List<NoteDto> notes = externalApiService.getNotes();
+        var inscriptions = Optional.ofNullable(externalApiService.getInscriptions()).orElse(List.of());
+        var cours = Optional.ofNullable(externalApiService.getCours()).orElse(List.of());
+        var notes = Optional.ofNullable(externalApiService.getNotes()).orElse(List.of());
 
-        // Create map for quick lookup
-        Map<String, CourDto> coursMap = cours.stream()
-                .collect(Collectors.toMap(CourDto::getMnemonique, c -> c));
+        // ✅ Index courses by mnemonique
+        var coursMap = cours.stream()
+                .collect(Collectors.toMap(CourDto::getMnemonique, c -> c, (c1, c2) -> c1));
+
+        // ✅ Index notes by (matricule → mnemonique → NoteDto)
+        var notesMap = notes.stream()
+                .collect(Collectors.groupingBy(
+                        NoteDto::getMatricule,
+                        Collectors.toMap(NoteDto::getMnemonique, n -> n, (n1, n2) -> n1)
+                ));
 
         List<BulletinDto> bulletins = new ArrayList<>();
 
         for (InscriptionDto insc : inscriptions) {
-            List<String> coursInscrits = parseCoursJson(insc.getCoursJson());
-            List<CourDetailDto> details = new ArrayList<>();
+            var coursInscrits = parseCoursJson(insc.getCoursJson());
+            var details = new ArrayList<CourDetailDto>();
 
             int ectsTotal = 0;
             int ectsObtenus = 0;
             int totalCreditsNotes = 0;
             int totalWeightedNotes = 0;
 
+            // ✅ Lookup notes in O(1) instead of scanning
+            var notesForStudent = notesMap.getOrDefault(insc.getMatricule(), Map.of());
+
             for (String mnemo : coursInscrits) {
-                CourDto cour = coursMap.get(mnemo);
-                if (cour == null) continue; // unknown course (could also be flagged as anomaly)
+                var cour = coursMap.get(mnemo);
+                if (cour == null) continue; // skip unknown courses
 
                 ectsTotal += cour.getCredit();
 
-                // Find note
-                Optional<NoteDto> noteOpt = notes.stream()
-                        .filter(n -> n.getMatricule().equals(insc.getMatricule()) &&
-                                n.getMnemonique().equals(mnemo))
-                        .findFirst();
-
-                Integer note = noteOpt.map(NoteDto::getNote).orElse(null);
+                var noteDto = notesForStudent.get(mnemo);
+                Integer note = (noteDto != null) ? noteDto.getNote() : null;
 
                 if (note != null) {
                     totalCreditsNotes += cour.getCredit();
                     totalWeightedNotes += note * cour.getCredit();
-
-                    if (note >= 10) {
-                        ectsObtenus += cour.getCredit();
-                    }
+                    if (note >= 10) ectsObtenus += cour.getCredit();
                 }
 
                 details.add(new CourDetailDto(
@@ -67,13 +69,14 @@ public class BulletinService {
                 ));
             }
 
-            double moyenne = totalCreditsNotes > 0 ?
-                    (double) totalWeightedNotes / totalCreditsNotes : 0.0;
+            double moyenne = totalCreditsNotes > 0
+                    ? (double) totalWeightedNotes / totalCreditsNotes
+                    : 0.0;
 
             boolean reussite = (ectsObtenus >= 60) ||
                     (details.stream().allMatch(d -> d.getNote() != null) && moyenne >= 10);
 
-            BulletinDto bulletin = new BulletinDto(
+            bulletins.add(new BulletinDto(
                     insc.getMatricule(),
                     insc.getNom(),
                     insc.getPrenom(),
@@ -84,23 +87,21 @@ public class BulletinService {
                     reussite,
                     details.stream()
                             .sorted(Comparator.comparing(CourDetailDto::getMnemonique))
-                            .collect(Collectors.toList())
-            );
-
-            bulletins.add(bulletin);
+                            .toList()
+            ));
         }
 
         return bulletins;
     }
 
     private List<String> parseCoursJson(String coursJson) {
-        // coursJson looks like ["MAT101","INF120"]
-        coursJson = coursJson.replace("[", "")
-                .replace("]", "")
-                .replace("\"", "");
-        if (coursJson.trim().isEmpty()) return Collections.emptyList();
-        return Arrays.asList(coursJson.split(","));
+        if (coursJson == null || coursJson.isBlank()) return List.of();
+        return Arrays.stream(coursJson.replace("[", "")
+                        .replace("]", "")
+                        .replace("\"", "")
+                        .split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .toList();
     }
-
-
 }
