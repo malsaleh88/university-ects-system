@@ -23,7 +23,9 @@ public class NoteService {
         return noteRepository.findByMatricule(matricule);
     }
 
-    
+    public List<Note> getNotesByCour(String mnemonique) {
+        return noteRepository.findByMnemonique(mnemonique);
+    }
 
 
 }
