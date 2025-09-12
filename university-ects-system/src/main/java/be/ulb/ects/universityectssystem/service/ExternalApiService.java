@@ -6,14 +6,26 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class ExternalApiService {
 
+    private static final String BASE_URL = "https://b0s0kwos00g48ow8cg0skg4w.89.116.111.143.sslip.io/api";
+
     private final RestTemplate restTemplate;
 
-    public ExternalApiService() {
-        this.restTemplate = new RestTemplate();
+    public ExternalApiService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
-    public String testConnection() {
-        String url = "https://b0s0kwos00g48ow8cg0skg4w.89.116.111.143.sslip.io/api";
+    public String getInscriptions() {
+        String url = BASE_URL + "/inscriptions";
+        return restTemplate.getForObject(url, String.class);
+    }
+
+    public String getCours() {
+        String url = BASE_URL + "/cours";
+        return restTemplate.getForObject(url, String.class);
+    }
+
+    public String getNotes() {
+        String url = BASE_URL + "/notes";
         return restTemplate.getForObject(url, String.class);
     }
 }
