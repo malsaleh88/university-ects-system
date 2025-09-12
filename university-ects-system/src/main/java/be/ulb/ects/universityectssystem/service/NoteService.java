@@ -19,7 +19,7 @@ public class NoteService {
         return noteRepository.findAll();
     }
 
-    public List<Note> getNotesByStudent(String matricule) {
+    public List<Note> getNotesByInscription(String matricule) {
         return noteRepository.findByMatricule(matricule);
     }
 
@@ -27,5 +27,8 @@ public class NoteService {
         return noteRepository.findByMnemonique(mnemonique);
     }
 
+    public List<Note> getNoteForInscriptionAndCour(String matricule, String mnemonique) {
+        return noteRepository.findByMatriculeAndMnemonique(matricule, mnemonique);
+    }
 
 }
