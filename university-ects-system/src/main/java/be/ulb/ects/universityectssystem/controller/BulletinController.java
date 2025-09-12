@@ -19,8 +19,8 @@ public class BulletinController {
         this.bulletinService = bulletinService;
     }
 
-    @GetMapping
+   /* @GetMapping
     public ResponseEntity<List<BulletinDto>> getAllBulletins() {
         return ResponseEntity.ok(bulletinService.generateBulletins());
-    }
+    }*/
 }

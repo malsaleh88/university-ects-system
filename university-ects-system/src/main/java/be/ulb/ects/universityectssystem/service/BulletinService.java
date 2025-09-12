@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 @Service
 public class BulletinService {
 
-    private final ExternalApiService externalApiService;
+ /*   private final ExternalApiService externalApiService;
 
     public BulletinService(ExternalApiService externalApiService) {
         this.externalApiService = externalApiService;
@@ -101,4 +101,6 @@ public class BulletinService {
         if (coursJson.trim().isEmpty()) return Collections.emptyList();
         return Arrays.asList(coursJson.split(","));
     }
+
+  */
 }
