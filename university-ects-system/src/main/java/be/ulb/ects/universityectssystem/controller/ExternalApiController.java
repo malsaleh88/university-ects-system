@@ -1,9 +1,13 @@
 package be.ulb.ects.universityectssystem.controller;
 
+import be.ulb.ects.universityectssystem.dto.InscriptionDto;
+import be.ulb.ects.universityectssystem.dto.CourDto;
+import be.ulb.ects.universityectssystem.dto.NoteDto;
 import be.ulb.ects.universityectssystem.service.ExternalApiService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/external")
@@ -16,17 +20,17 @@ public class ExternalApiController {
     }
 
     @GetMapping("/inscriptions")
-    public String fetchInscriptions() {
-        return externalApiService.getInscriptions();
+    public ResponseEntity<List<InscriptionDto>> fetchInscriptions() {
+        return ResponseEntity.ok(externalApiService.getInscriptions());
     }
 
     @GetMapping("/cours")
-    public String fetchCours() {
-        return externalApiService.getCours();
+    public ResponseEntity<List<CourDto>> fetchCours() {
+        return ResponseEntity.ok(externalApiService.getCours());
     }
 
     @GetMapping("/notes")
-    public String fetchNotes() {
-        return externalApiService.getNotes();
+    public ResponseEntity<List<NoteDto>> fetchNotes() {
+        return ResponseEntity.ok(externalApiService.getNotes());
     }
 }

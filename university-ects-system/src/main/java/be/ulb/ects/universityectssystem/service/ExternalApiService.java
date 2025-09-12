@@ -1,7 +1,13 @@
 package be.ulb.ects.universityectssystem.service;
 
+import be.ulb.ects.universityectssystem.dto.CourDto;
+import be.ulb.ects.universityectssystem.dto.InscriptionDto;
+import be.ulb.ects.universityectssystem.dto.NoteDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class ExternalApiService {
@@ -14,18 +20,21 @@ public class ExternalApiService {
         this.restTemplate = restTemplate;
     }
 
-    public String getInscriptions() {
+    public List<InscriptionDto> getInscriptions() {
         String url = BASE_URL + "/inscriptions";
-        return restTemplate.getForObject(url, String.class);
+        InscriptionDto[] response = restTemplate.getForObject(url, InscriptionDto[].class);
+        return Arrays.asList(response);
     }
 
-    public String getCours() {
+    public List<CourDto> getCours() {
         String url = BASE_URL + "/cours";
-        return restTemplate.getForObject(url, String.class);
+        CourDto[] response = restTemplate.getForObject(url, CourDto[].class);
+        return Arrays.asList(response);
     }
 
-    public String getNotes() {
+    public List<NoteDto> getNotes() {
         String url = BASE_URL + "/notes";
-        return restTemplate.getForObject(url, String.class);
+        NoteDto[] response = restTemplate.getForObject(url, NoteDto[].class);
+        return Arrays.asList(response);
     }
 }
