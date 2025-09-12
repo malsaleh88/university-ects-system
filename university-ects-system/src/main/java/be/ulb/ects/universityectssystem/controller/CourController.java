@@ -2,6 +2,7 @@ package be.ulb.ects.universityectssystem.controller;
 
 import be.ulb.ects.universityectssystem.model.Cour;
 import be.ulb.ects.universityectssystem.repository.CourRepository;
+import be.ulb.ects.universityectssystem.service.CourService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -15,12 +16,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/cours")
 public class CourController {
-    private final CourRepository courRepository;
+    private final CourService courService;
 
-    public CourController(CourRepository courRepository) {
-        this.courRepository = courRepository;
+    public CourController(CourService courService) {
+        this.courService = courService;
     }
-
     @Operation(summary = "Get all cours")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Cours retrieved"),
@@ -28,7 +28,7 @@ public class CourController {
     })
     @GetMapping
     public ResponseEntity<List<Cour>> getAllCours() {
-        List<Cour> cours = courRepository.findAll();
+        List<Cour> cours = courService.getAllCours();
         if (cours.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -42,7 +42,7 @@ public class CourController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<Cour> getCour(@PathVariable String id) {
-        return courRepository.findById(id)
+        return courService.getCourById(id)
                 .map(ResponseEntity::ok) //
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
