@@ -2,13 +2,20 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav style={{ padding: "10px", background: "#282c34" }}>
-      <Link to="/bulletins" style={{ color: "white", marginRight: "15px" }}>
-        Bulletins
-      </Link>
-      <Link to="/anomalies" style={{ color: "white" }}>
-        Anomalies
-      </Link>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/bulletins">University ECTS</Link>
+        <div className="collapse navbar-collapse">
+          <ul className="navbar-nav me-auto">
+            <li className="nav-item">
+              <Link className="nav-link" to="/bulletins">Bulletins</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/anomalies">Anomalies</Link>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
   );
 }
