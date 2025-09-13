@@ -14,7 +14,7 @@ export default function Home() {
           </Button>
         </Link>
 
-        <Link to="/bulletins">
+        <Link to="/api">
           <Button variant="success" size="lg" style={{ margin: "10px" }}>
             Part 2: API (Bulletins & Anomalies)
           </Button>

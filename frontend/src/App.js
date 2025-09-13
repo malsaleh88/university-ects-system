@@ -5,9 +5,9 @@ import Anomalies from "./pages/Anomalies";
 import Inscriptions from "./pages/Inscriptions";
 import Notes from "./pages/Notes";
 import Cours from "./pages/Cours";
-
+import Api from "./pages/Api";
 import About from "./pages/About";
-import Home from "./pages/Home";  // ⬅ new
+import Home from "./pages/Home";  
 import SQLite from "./pages/SQLite";
 
 function App() {
@@ -19,9 +19,9 @@ function App() {
         <Route path="/sqlite" element={<SQLite />} />
         <Route path="/bulletins" element={<Bulletins />} />
         <Route path="/inscriptions" element={<Inscriptions />} />
+        <Route path="/api" element={<Api />} />   
         <Route path="/anomalies" element={<Anomalies />} />
-                <Route path="/cours" element={<Cours />} />
-
+        <Route path="/cours" element={<Cours />} />
         <Route path="/notes" element={<Notes />} />
         <Route path="/about" element={<About />} />
 
