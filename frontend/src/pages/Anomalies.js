@@ -11,10 +11,10 @@ export default function Anomalies() {
   }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Anomalies</h1>
-      <table border="1" cellPadding="5">
-        <thead>
+    <div className="container my-4">
+      <h1 className="mb-4">Anomalies</h1>
+      <table className="table table-hover table-bordered">
+        <thead className="table-dark">
           <tr>
             <th>Type</th>
             <th>Matricule</th>
