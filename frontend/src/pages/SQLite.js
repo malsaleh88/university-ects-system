@@ -1,35 +1,31 @@
-import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
+import { Container, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export default function SQLite() {
-  const [data, setData] = useState([]);
-
-  const fetchData = (endpoint) => {
-    fetch(`http://localhost:8080/api/${endpoint}`)
-      .then((res) => res.json())
-      .then(setData)
-      .catch((err) => console.error("Error:", err));
-  };
-
   return (
-    <Container style={{ marginTop: "20px" }}>
-      <h1>SQLite Data</h1>
-      <p>Explore raw data from the SQLite database:</p>
+    <Container className="text-center" style={{ marginTop: "100px" }}>
+      <h1>📊 SQLite Data</h1>
+      <p>Select which dataset you want to explore:</p>
 
-      <div style={{ marginBottom: "20px" }}>
-        <Button variant="primary" onClick={() => fetchData("inscriptions")} style={{ margin: "5px" }}>
-          Get Inscriptions
-        </Button>
-        <Button variant="info" onClick={() => fetchData("notes")} style={{ margin: "5px" }}>
-          Get Notes
-        </Button>
-        <Button variant="warning" onClick={() => fetchData("cours")} style={{ margin: "5px" }}>
-          Get Cours
-        </Button>
+      <div style={{ marginTop: "40px" }}>
+        <Link to="/inscriptions">
+          <Button variant="primary" size="lg" style={{ margin: "15px", width: "200px" }}>
+            Inscriptions
+          </Button>
+        </Link>
+
+        <Link to="/notes">
+          <Button variant="info" size="lg" style={{ margin: "15px", width: "200px" }}>
+            Notes
+          </Button>
+        </Link>
+
+        <Link to="/cours">
+          <Button variant="warning" size="lg" style={{ margin: "15px", width: "200px" }}>
+            Cours
+          </Button>
+        </Link>
       </div>
-
-      <pre>{JSON.stringify(data, null, 2)}</pre>
     </Container>
   );
 }
