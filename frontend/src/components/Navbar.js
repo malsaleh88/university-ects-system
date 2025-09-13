@@ -4,14 +4,38 @@ export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/bulletins">University ECTS</Link>
-        <div className="collapse navbar-collapse">
+        <Link className="navbar-brand" to="/">University ECTS</Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto">
+            <li className="nav-item">
+              <Link className="nav-link" to="/">Home</Link>
+            </li>
             <li className="nav-item">
               <Link className="nav-link" to="/bulletins">Bulletins</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/anomalies">Anomalies</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/inscriptions">Inscriptions</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/notes">Notes</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/cours">Cours</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/about">About</Link>
             </li>
           </ul>
         </div>
