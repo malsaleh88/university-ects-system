@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import Bulletins from "./pages/Bulletins";
 import Anomalies from "./pages/Anomalies";
 import Home from "./pages/Home";  // ⬅ new
-import SQLite from "./pages/SQLite"; // ⬅ new (we’ll make this next)
+import SQLite from "./pages/SQLite";
 
 function App() {
   return (
