@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import Bulletins from "./pages/Bulletins";
 import Anomalies from "./pages/Anomalies";
 import Inscriptions from "./pages/Inscriptions";
-
+import Notes from "./pages/Notes";
 import About from "./pages/About";
 import Home from "./pages/Home";  // ⬅ new
 import SQLite from "./pages/SQLite";
@@ -18,6 +18,7 @@ function App() {
         <Route path="/bulletins" element={<Bulletins />} />
         <Route path="/inscriptions" element={<Inscriptions />} />
         <Route path="/anomalies" element={<Anomalies />} />
+        <Route path="/notes" element={<Notes />} />
         <Route path="/about" element={<About />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
