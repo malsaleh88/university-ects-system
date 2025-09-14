@@ -2,18 +2,15 @@ version: "3.9"
 services:
   backend:
     build: ./university-ects-system
-    container_name: ects-backend
     ports:
       - "8080:8080"
     volumes:
-      # Mount your SQLite file so backend can use it
       - ./university-ects-system/src/main/resources/universite_demo.sqlite:/app/universite_demo.sqlite
     environment:
       SPRING_DATASOURCE_URL: jdbc:sqlite:/app/universite_demo.sqlite
 
   frontend:
     build: ./frontend
-    container_name: ects-frontend
     ports:
       - "3000:80"
     depends_on:
