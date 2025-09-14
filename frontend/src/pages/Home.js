@@ -4,7 +4,7 @@ import { Container, Button } from "react-bootstrap";
 export default function Home() {
   return (
     <Container className="text-center" style={{ marginTop: "50px" }}>
-      <h1>👋 Welcome to University ECTS System</h1>
+      <h1>👋CI/CD Test:  Welcome to University ECTS System</h1>
       <p>Select which part you want to explore:</p>
 
       <div style={{ marginTop: "30px" }}>
