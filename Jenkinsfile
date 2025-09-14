@@ -8,6 +8,12 @@ pipeline {
             }
         }
 
+        stage('Clean old containers') {
+            steps {
+                bat 'docker-compose down || echo "No containers to remove"'
+            }
+        }
+
         stage('Build & Run with Docker Compose') {
             steps {
                 bat 'docker-compose up --build -d'
