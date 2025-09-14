@@ -4,9 +4,11 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/malsaleh88/university-ects-system.git'
+                git branch: 'main',
+                    url: 'https://github.com/malsaleh88/university-ects-system.git'
             }
-        }
+       }
+
 
         stage('Build Backend') {
             steps {
