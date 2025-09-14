@@ -8,16 +8,17 @@ pipeline {
             }
         }
 
-        stage('Build Backend') {
+        stage('Build & Run with Docker Compose') {
             steps {
-                bat 'docker build -t ects-backend ./university-ects-system'
+                bat 'docker-compose up --build -d'
             }
         }
+    }
 
-        stage('Build Frontend') {
-            steps {
-                bat 'docker build -t ects-frontend ./frontend'
-            }
+    post {
+        always {
+            echo 'Cleaning up containers...'
+            bat 'docker-compose down'
         }
     }
 }
