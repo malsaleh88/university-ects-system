@@ -127,9 +127,8 @@ I used **Spring Boot** for the backend because it provides:
 ✅ These choices ensure the system is **modular, efficient (O(n) per student), and easy to deploy**.
 
 
-Got it 👍 You’d like **everything in `bash` code blocks**. Here’s the full Markdown updated that way:
 
-````markdown
+
 # 🚀 How to Run the Project
 
 The easiest way to run everything is with **Docker Compose**:
