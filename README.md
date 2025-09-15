@@ -53,23 +53,54 @@ Once the backend is running:
 
 ---
 
-## 📊 Business Logic
+## 🧠 Design Decisions & Algorithm Choices
 
-### 🎓 Bulletin Generation
-For each student/year:
-- **ects_total_inscrits** → sum of registered course credits  
-- **ects_obtenus** → sum of credits of passed courses (note ≥ 10)  
-- **moyenne_ponderee** → weighted average of notes by credits  
-- **reussite** → true if ects_obtenus ≥ 60 OR all courses graded & average ≥ 10  
+### 1. Backend Design (Spring Boot + REST API)
+- I used **Spring Boot** for the backend because it provides:
+  - Built-in support for REST endpoints with simple annotations (`@RestController`, `@GetMapping`).
+  - Integration with **Spring Data JPA** for easy SQLite access.
+  - Automatic API docs via **Swagger/OpenAPI**.
 
-### ⚠️ Anomaly Detection
-- `NOTE_SANS_INSCRIPTION` → Note exists but not registered  
-- `COURS_INCONNU` → Course in inscription but missing in DB  
-- `INSCRIPTION_SANS_COURS` → Student without registered courses  
-- `DUPLICATA_NOTE` → Multiple notes for same (student, course)  
-- `NOTE_SANS_CREDIT` → Course with note but invalid credits  
+This kept the backend clean, modular, and easy to extend.
 
 ---
+
+### 2. Bulletin Generation
+- Compute per-student totals, averages, and success.  
+- For each course: add credits, count passed ones, include note in weighted average.  
+- Success if `ects_obtenus ≥ 60` or all graded with average ≥ 10.  
+- **Efficiency:** O(n) per student, with O(1) lookups via maps.
+
+---
+
+### 3. Anomaly Detection
+- Detects:  
+  - note without registration  
+  - course not in DB  
+  - empty course list  
+  - duplicate notes  
+  - invalid credits  
+- Uses maps for quick lookups, single-pass validation.  
+- **Efficiency:** O(n), scalable without nested scans.
+
+
+### 4. Frontend Design (React + Bootstrap)
+- Chose **React** for modular components and quick state updates.  
+- Used **React-Bootstrap** for fast responsive UI with minimal CSS.  
+- Each resource (Courses, Notes, Bulletins, Anomalies) has its own component → separation of concerns.  
+- Tables & search bars improve **UX** (quick filtering).
+
+---
+
+### 5. DevOps Choices
+- **Docker** → consistent environment for backend, frontend, and DB.  
+- **Jenkins** → automate build, test, and deploy pipeline.  
+- **docker-compose** → one command to spin up the whole system.  
+
+---
+
+✅ These choices ensure the system is **modular, efficient (O(n) per student), and easy to deploy**.
+
 
 
 
