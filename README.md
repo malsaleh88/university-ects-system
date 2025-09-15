@@ -43,16 +43,15 @@ This project was developed as part of a technical assessment and demonstrates:
 - `GET /api/anomalies` → Generate anomaly report  
 
 ---
-
 ## 🧠 Design Decisions & Algorithm Choices
 
 ### 1. Backend Design (Spring Boot + REST API)
-- I used **Spring Boot** for the backend because it provides:
-  - Built-in support for REST endpoints with simple annotations (`@RestController`, `@GetMapping`).
-  - Integration with **Spring Data JPA** for easy SQLite access.
-  - Automatic API docs via **Swagger/OpenAPI**.
+I used **Spring Boot** for the backend because it provides:
+- Built-in support for REST endpoints with simple annotations (`@RestController`, `@GetMapping`).  
+- Integration with **Spring Data JPA** for easy SQLite access.  
+- Automatic API docs via **Swagger/OpenAPI**.  
 
-This kept the backend clean, modular, and easy to extend.
+👉 This kept the backend **clean, modular, and easy to extend**.
 
 ---
 
@@ -60,7 +59,7 @@ This kept the backend clean, modular, and easy to extend.
 - Compute per-student totals, averages, and success.  
 - For each course: add credits, count passed ones, include note in weighted average.  
 - Success if `ects_obtenus ≥ 60` or all graded with average ≥ 10.  
-- **Efficiency:** O(n) per student, with O(1) lookups via maps.
+- **Efficiency:** O(n) per student, with O(1) lookups via maps.  
 
 ---
 
@@ -72,23 +71,58 @@ This kept the backend clean, modular, and easy to extend.
   - duplicate notes  
   - invalid credits  
 - Uses maps for quick lookups, single-pass validation.  
-- **Efficiency:** O(n), scalable without nested scans.
-
-
-### 4. Frontend Design (React + Bootstrap)
-- Chose **React** for modular components and quick state updates.  
-- Used **React-Bootstrap** for fast responsive UI with minimal CSS.  
-- Each resource (Courses, Notes, Bulletins, Anomalies) has its own component → separation of concerns.  
-- Tables & search bars improve **UX** (quick filtering).
+- **Efficiency:** O(n), scalable without nested scans.  
 
 ---
 
-### 5. DevOps Choices
+### 4. DTOs vs Models
+- **Models** (`Cour`, `Inscription`, `Note`):  
+  - Direct mapping to SQLite database tables.  
+  - Used for CRUD operations via Spring Data JPA.  
+
+- **DTOs** (`BulletinDto`, `AnomalyDto`, `NoteDto`, etc.):  
+  - Used to **shape the API responses** (bulletins & anomalies).  
+  - Keeps API payloads clean and separate from database entities.  
+  - Allows flexibility if the database schema changes without breaking the API.  
+
+👉 This separation follows **best practices (Separation of Concerns)** and makes the codebase easier to maintain.
+
+---
+
+### 5. Layered Architecture: Controller, Service, Repository
+- **Controller Layer**:  
+  - Handles HTTP requests/responses.  
+  - Exposes clean REST endpoints for the frontend and API clients.  
+  - Does **not** contain business logic → keeps code testable.  
+
+- **Service Layer**:  
+  - Contains business logic (bulletin calculation, anomaly detection).  
+  - Reusable and independent of web layer → easier to test and extend.  
+
+- **Repository Layer**:  
+  - Manages persistence with **Spring Data JPA**.  
+  - Abstracts SQL/SQLite queries → developers only work with Java objects.  
+
+👉 This structure enforces **Separation of Concerns**:  
+- Controllers = API interface  
+- Services = Business rules  
+- Repositories = Database access  
+
+---
+
+### 6. Frontend Design (React + Bootstrap)
+- Chose **React** for modular components and quick state updates.  
+- Used **React-Bootstrap** for fast responsive UI with minimal CSS.  
+- Each resource (Courses, Notes, Bulletins, Anomalies) has its own component → **separation of concerns**.  
+- Tables & search bars improve **UX** (quick filtering).  
+
+---
+
+### 7. DevOps Choices
 - **Docker** → consistent environment for backend, frontend, and DB.  
 - **Jenkins** → automate build, test, and deploy pipeline.  
 - **docker-compose** → one command to spin up the whole system.  
 
----
 
 ✅ These choices ensure the system is **modular, efficient (O(n) per student), and easy to deploy**.
 
