@@ -13,6 +13,7 @@ This project was developed as part of a technical assessment and demonstrates:
 
 ## 📂 Project Structure
 
+<img width="812" height="635" alt="Screenshot 2025-09-15 134125" src="https://github.com/user-attachments/assets/58377151-c0f3-4445-b41d-06e372ffa145" />
 
 
 ---
