@@ -44,15 +44,6 @@ This project was developed as part of a technical assessment and demonstrates:
 
 ---
 
-## 📜 API Documentation (Swagger)
-
-Swagger UI is enabled for quick API testing.  
-Once the backend is running:
-
-👉 [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)  
-
----
-
 ## 🧠 Design Decisions & Algorithm Choices
 
 ### 1. Backend Design (Spring Boot + REST API)
