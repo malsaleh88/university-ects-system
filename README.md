@@ -102,6 +102,66 @@ This kept the backend clean, modular, and easy to extend.
 ✅ These choices ensure the system is **modular, efficient (O(n) per student), and easy to deploy**.
 
 
+Got it 👍 You’d like **everything in `bash` code blocks**. Here’s the full Markdown updated that way:
+
+````markdown
+# 🚀 How to Run the Project
+
+The easiest way to run everything is with **Docker Compose**:
+
+---
+
+## ▶ Run with Docker
+
+1. Make sure you have **Docker** installed:  
+   👉 [Get Docker](https://www.docker.com/get-started/)
+
+2. Clone this repository and navigate into the folder:
+   ```bash
+   git clone https://github.com/malsaleh88/university-ects-system.git
+   cd university-ects-system
+````
+
+3. Start the application:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+4. Open your browser:
+
+   ```bash
+   # Backend API Docs → http://localhost:8080/swagger-ui.html
+   # Frontend App → http://localhost:3000
+   ```
+
+---
+
+## 🛠 Alternative (Run without Docker)
+
+### Backend (Spring Boot)
+
+```bash
+cd university-ects-system
+./mvnw spring-boot:run
+# Open http://localhost:8080
+# Swagger UI: http://localhost:8080/swagger-ui.html
+```
+
+### Frontend (React)
+
+```bash
+cd frontend
+npm install
+npm start
+# Open http://localhost:3000
+```
+
+```
+
+Do you also want me to **combine the backend + frontend commands** into a single script snippet so you (or others) can run everything faster?
+```
+
 
 
 ## 🐳 Running with Docker
