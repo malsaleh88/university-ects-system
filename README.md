@@ -194,6 +194,20 @@ https://github.com/user-attachments/assets/9ab78b21-8edd-4b7e-b446-dd475db838aa
 
 ---
 
+## 🤖 Use of AI in this Project
+
+I used **AI (ChatGPT)** as a helper during this project.  
+
+- Helped me to **write cleaner code**.  
+- Helped me to **fix bugs** during development.  
+- Suggested ideas for the **project architecture**.  
+- Supported me in configuring **Docker** and **Jenkins**.  
+- Helped make **algorithms simpler and faster** (O(n) lookups, pre-indexing).  
+- Improved the **README.md** and documentation style.  
+
+👉 ChatGPT helped me save time, solve problems faster, and keep the project clear and organized.
+
+
 ## 🙏 Conclusion
 
 This project demonstrates:  
