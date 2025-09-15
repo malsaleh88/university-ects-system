@@ -157,15 +157,4 @@ npm start
 # Open http://localhost:3000
 ```
 
-```
 
-Do you also want me to **combine the backend + frontend commands** into a single script snippet so you (or others) can run everything faster?
-```
-
-
-
-## 🐳 Running with Docker
-
-```bash
-# Build & run services
-docker-compose up --build
