@@ -1,6 +1,6 @@
 # 🎓 University ECTS System
 
-A full-stack project (Spring Boot + React) to manage university **ECTS** (European Credit Transfer System).  
+A full-stack project (Spring Boot + React) to manage university **ECTS**.  
 This project was developed as part of a technical assessment and demonstrates:
 
 - ✅ REST API (Spring Boot) for accessing student/course data  
@@ -170,7 +170,6 @@ This project demonstrates:
 - Delivering a clean **frontend UI** for easy interaction  
 
 ⚡ Thank you for reviewing my work!  
-If you have any questions, feel free to reach out.  
 
 👤 **Author:** Mohammad Alsaleh  
 
