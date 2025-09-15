@@ -156,7 +156,7 @@ https://github.com/user-attachments/assets/9ab78b21-8edd-4b7e-b446-dd475db838aa
 
 ## 🛠 Jenkins Build Example
 
-<img width="1411" height="758" alt="jeniii" src="https://github.com/user-attachments/assets/48cecb45-473f-4970-bede-1adc37000abe" />
+<img width="1912" height="880" alt="jenkiiii" src="https://github.com/user-attachments/assets/2c1c7c8d-f36f-4010-a1b5-a33c2247eadc" />
 
 
 ---
