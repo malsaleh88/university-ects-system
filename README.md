@@ -148,8 +148,30 @@ npm start
 # Open http://localhost:3000
 ```
 
+## 🎥 Demo Video
 
 https://github.com/user-attachments/assets/9ab78b21-8edd-4b7e-b446-dd475db838aa
 
+---
+
+## 🛠 Jenkins Build Example
+
+<img width="1411" height="758" alt="jeniii" src="https://github.com/user-attachments/assets/48cecb45-473f-4970-bede-1adc37000abe" />
+
+
+---
+
+## 🙏 Conclusion
+
+This project demonstrates:  
+- Building a **full-stack system** (Spring Boot + React)  
+- Designing efficient **algorithms** for bulletins & anomaly detection  
+- Using **Docker & Jenkins** for reproducibility and CI/CD  
+- Delivering a clean **frontend UI** for easy interaction  
+
+⚡ Thank you for reviewing my work!  
+If you have any questions, feel free to reach out.  
+
+👤 **Author:** Mohammad Alsaleh  
 
 
