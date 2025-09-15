@@ -128,7 +128,7 @@ I used **Spring Boot** for the backend because it provides:
 
 
 
-
+````markdown
 # 🚀 How to Run the Project
 
 The easiest way to run everything is with **Docker Compose**:
